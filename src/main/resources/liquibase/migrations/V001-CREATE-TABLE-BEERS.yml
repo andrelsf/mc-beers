@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: V001
+      labels: "table_beers"
+      author: "andre.dev.linux@gmail.com"
+      comment: "Create table beers and index"
+      changes:
+        - tagDatabase:
+            tag: 1.0.0
+        - createTable:
+            tableName: mcbeers
+            columns:
+              - column:
+                  name: beer_id
+                  type: VARCHAR(37)
+                  autoIncrement: false
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: alcohol_content
+                  type: NUMERIC(2,1)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ingredients
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: NUMERIC(9,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_mcbeers
+            tableName: mcbeers
+            columns:
+              - column:
+                  name: beer_id
+              - column:
+                  name: name
+              - column:
+                  name: created_at
