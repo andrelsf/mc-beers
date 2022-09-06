@@ -1,0 +1,45 @@
+server:
+  port: ${SERVER_PORT:8090}
+  shutdown: graceful
+  undertow:
+    threads:
+      io: ${UNDERTOW_IO_THREADS:10}
+      worker: ${UNDERTOW_IO_WORKERS:100}
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: mc-beers
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  datasource:
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER:org.postgresql.Driver}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/mcbeers}
+    username: ${USERNAME_DATABASE:mcbeers}
+    password: ${PASSWORD_PASSWORD:mcbeers}
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+    open-in-view: false
+  liquibase:
+    enabled: false
+    change-log: "liquibase/changelog.yml"
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    drop-first: false
+    driver-class-name: ${spring.datasource.driver-class-name}
+
+logging:
+  level:
+    root: ${LOGGING_LEVEL:INFO}
+    org.hibernate.type.descriptor.sql: ${LOGGING_LEVEL:INFO}
+  pattern:
+    console: "[%thread][%highlight(%-5level)][%cyan(%d{yyyy-MM-dd HH:mm:ss})][%yellow(%X{requestId})][%magenta(%logger{40})] - %msg%n"
