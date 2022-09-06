@@ -29,7 +29,7 @@ spring:
         format_sql: false
     open-in-view: false
   liquibase:
-    enabled: false
+    enabled: true
     change-log: "liquibase/changelog.yml"
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}
