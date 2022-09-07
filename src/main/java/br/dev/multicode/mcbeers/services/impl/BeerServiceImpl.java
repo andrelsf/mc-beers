@@ -2,13 +2,15 @@ package br.dev.multicode.mcbeers.services.impl;
 
 import br.dev.multicode.mcbeers.api.http.requests.BeerRequest;
 import br.dev.multicode.mcbeers.api.http.responses.BeerResponse;
+import br.dev.multicode.mcbeers.api.utils.CacheablePageImpl;
 import br.dev.multicode.mcbeers.api.utils.Mapper;
 import br.dev.multicode.mcbeers.entities.Beer;
 import br.dev.multicode.mcbeers.repositories.BeerRepository;
 import br.dev.multicode.mcbeers.services.BeerService;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,22 +22,21 @@ public class BeerServiceImpl implements BeerService {
 
   private Beer findById(final String beerId) {
     return beerRepository.findById(beerId)
-        .orElseThrow(() ->
-            new RuntimeException("Beer not found by ID=".concat(beerId)));
+      .orElseThrow(() -> new RuntimeException("Beer not found by ID=".concat(beerId)));
   }
 
   @Override
   @Transactional(readOnly = true)
-  public Set<BeerResponse> getAll() {
-    return beerRepository.findAll()
-      .stream()
-      .map(Mapper::entity2Response)
-      .collect(Collectors.toSet());
+  public Page<BeerResponse> findAll(final Integer offset, final Integer limit) {
+    final Pageable pageRequest = PageRequest.of(offset, limit);
+    final Page<BeerResponse> beerResponses = beerRepository.findAll(pageRequest)
+        .map(Mapper::entity2Response);
+    return new CacheablePageImpl<>(beerResponses.getContent());
   }
 
   @Override
   @Transactional(readOnly = true)
-  public BeerResponse getBeerById(String beerId) {
+  public BeerResponse findBeerById(String beerId) {
     final Beer beer = findById(beerId);
     return Mapper.entity2Response(beer);
   }
@@ -51,8 +52,8 @@ public class BeerServiceImpl implements BeerService {
   @Override
   @Transactional
   public void delete(final String beerId) {
-     final Beer beer = findById(beerId);
-     beerRepository.delete(beer);
+    final Beer beer = findById(beerId);
+    beerRepository.delete(beer);
   }
 
   @Override
