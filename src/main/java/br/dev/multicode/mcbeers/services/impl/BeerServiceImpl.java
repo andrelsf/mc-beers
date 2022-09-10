@@ -5,6 +5,7 @@ import br.dev.multicode.mcbeers.api.http.responses.BeerResponse;
 import br.dev.multicode.mcbeers.api.utils.CacheablePageImpl;
 import br.dev.multicode.mcbeers.api.utils.Mapper;
 import br.dev.multicode.mcbeers.entities.Beer;
+import br.dev.multicode.mcbeers.exceptions.NotFoundException;
 import br.dev.multicode.mcbeers.repositories.BeerRepository;
 import br.dev.multicode.mcbeers.services.BeerService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class BeerServiceImpl implements BeerService {
 
   private Beer findById(final String beerId) {
     return beerRepository.findById(beerId)
-      .orElseThrow(() -> new RuntimeException("Beer not found by ID=".concat(beerId)));
+      .orElseThrow(() -> new NotFoundException("Beer not found by ID=".concat(beerId)));
   }
 
   @Override
