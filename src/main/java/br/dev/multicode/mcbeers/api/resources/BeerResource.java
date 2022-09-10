@@ -7,7 +7,6 @@ import br.dev.multicode.mcbeers.api.http.responses.BeerResponse;
 import br.dev.multicode.mcbeers.services.BeerService;
 import java.net.URI;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -61,6 +60,7 @@ public class BeerResource {
       .buildAndExpand(beerId)
       .toUri();
     return ResponseEntity.status(HttpStatus.CREATED)
+      .header("resourceId", beerId)
       .location(uriLocation)
       .build();
   }
