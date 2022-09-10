@@ -15,7 +15,7 @@ public class BeerResponse {
 
   private String id;
   private String name;
-  private float alcoholContent;
+  private Double alcoholContent;
   private String ingredients;
   private BigDecimal price;
 

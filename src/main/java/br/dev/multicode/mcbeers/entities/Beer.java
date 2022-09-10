@@ -34,7 +34,7 @@ public class Beer {
   private String name;
 
   @Column(nullable = false)
-  private float alcoholContent;
+  private Double alcoholContent;
 
   @Column(nullable = false)
   private String ingredients;

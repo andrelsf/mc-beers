@@ -18,7 +18,7 @@ public class BeerRequest {
   private String name;
 
   @NotNull
-  private float alcoholContent;
+  private Double alcoholContent;
 
   @NotBlank
   private String ingredients;
